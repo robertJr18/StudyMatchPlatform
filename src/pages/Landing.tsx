@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { GraduationCap, Calendar, Users, BookOpen, BarChart3 } from "lucide-react";
 import { LoginModal } from "@/components/LoginModal";
+import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -44,12 +45,7 @@ export default function Landing() {
       <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-2">
-              <GraduationCap className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                StudyMatch
-              </span>
-            </div>
+            <Logo size="md" />
             <Button onClick={() => setShowLogin(true)}>
               Iniciar Sesión
             </Button>
@@ -66,14 +62,9 @@ export default function Landing() {
         <p className="text-2xl md:text-3xl text-muted-foreground mb-4 font-medium">
           La plataforma premium de gestión académica
         </p>
-        <p className="text-xl text-muted-foreground mb-6">
+        <p className="text-xl text-muted-foreground mb-8">
           Automatiza y optimiza las monitorías universitarias
         </p>
-        <div className="inline-block bg-primary/10 border border-primary/20 rounded-lg px-6 py-3 mb-8">
-          <p className="text-lg font-semibold text-primary">
-            Inversión: $35.000.000 COP/semestre
-          </p>
-        </div>
       </section>
 
       {/* Features Section */}

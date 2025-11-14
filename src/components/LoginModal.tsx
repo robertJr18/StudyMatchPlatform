@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GraduationCap } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Logo } from "@/components/Logo";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -70,8 +70,8 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <GraduationCap className="h-8 w-8 text-primary" />
+          <div className="flex flex-col items-center justify-center gap-3 mb-2">
+            <Logo size="md" />
             <DialogTitle className="text-2xl">Iniciar Sesión</DialogTitle>
           </div>
         </DialogHeader>

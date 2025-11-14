@@ -31,6 +31,9 @@ export default function StudentDashboard() {
 
   const fetchEnrolledSubjects = async () => {
     try {
+      console.log("📚 [StudentDashboard] Fetching subjects for student:", appUser?.id);
+      console.log("📚 [StudentDashboard] Student email:", appUser?.email);
+
       const { data: enrollments, error } = await supabase
         .from("enrollments")
         .select(`
@@ -45,7 +48,16 @@ export default function StudentDashboard() {
         `)
         .eq("student_id", appUser?.id);
 
+      console.log("📚 [StudentDashboard] Enrollments response:", { enrollments, error });
+
       if (error) throw error;
+
+      if (!enrollments || enrollments.length === 0) {
+        console.warn("⚠️ [StudentDashboard] No enrollments found for student:", appUser?.id);
+        setSubjects([]);
+        setLoading(false);
+        return;
+      }
 
       // Get monitor counts for each subject
       const subjectsWithCounts = await Promise.all(
@@ -55,6 +67,8 @@ export default function StudentDashboard() {
             .select("*", { count: "exact", head: true })
             .eq("subject_id", enrollment.subjects.id);
 
+          console.log(`📚 [StudentDashboard] Subject "${enrollment.subjects.name}" has ${count} monitors`);
+
           return {
             ...enrollment.subjects,
             monitor_count: count || 0,
@@ -62,9 +76,10 @@ export default function StudentDashboard() {
         })
       );
 
+      console.log("✅ [StudentDashboard] Final subjects with counts:", subjectsWithCounts);
       setSubjects(subjectsWithCounts);
     } catch (error) {
-      console.error("Error fetching subjects:", error);
+      console.error("❌ [StudentDashboard] Error fetching subjects:", error);
     } finally {
       setLoading(false);
     }
