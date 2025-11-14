@@ -46,15 +46,17 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
         localStorage.setItem('user', JSON.stringify(data));
         toast.success(`Bienvenido, ${data.full_name}`);
         onOpenChange(false);
-        
-        // Redirigir según rol
+
+        // Redirigir según rol con recarga para actualizar AuthContext
         const redirectMap: Record<string, string> = {
           student: "/estudiante/dashboard",
           monitor: "/monitor/dashboard",
           coordinator: "/admin/dashboard",
           admin: "/admin/dashboard",
         };
-        navigate(redirectMap[data.role] || "/");
+
+        // Usar window.location para forzar recarga del AuthContext
+        window.location.href = redirectMap[data.role] || "/";
       } else {
         toast.error("Usuario no encontrado");
       }
@@ -107,18 +109,6 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-          </div>
-
-          <div className="bg-muted/50 rounded-lg p-4 space-y-2 text-sm">
-            <p className="font-semibold text-center mb-3">💡 Usuarios de prueba</p>
-            <div className="space-y-2">
-              <p className="font-mono text-xs">robert.gonzalez@universidad.edu.co</p>
-              <p className="font-mono text-xs">jussi.torres@universidad.edu.co</p>
-              <p className="font-mono text-xs">admin@universidad.edu.co</p>
-            </div>
-            <p className="text-center font-semibold text-primary mt-3">
-              Contraseña: 123
-            </p>
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
