@@ -1,12 +1,28 @@
 import { useState } from "react";
-import { GraduationCap, Calendar, Users, BookOpen, BarChart3 } from "lucide-react";
+import { GraduationCap, Calendar, Users, BookOpen, BarChart3, Settings } from "lucide-react";
 import { LoginModal } from "@/components/LoginModal";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { setupTestData } from "@/utils/setupTestData";
+import { toast } from "sonner";
 
 export default function Landing() {
   const [showLogin, setShowLogin] = useState(false);
+  const [setupLoading, setSetupLoading] = useState(false);
+
+  const handleSetup = async () => {
+    setSetupLoading(true);
+    try {
+      await setupTestData();
+      toast.success("¡Datos de prueba configurados! Ahora puedes iniciar sesión.");
+    } catch (error) {
+      console.error("Setup error:", error);
+      toast.error("Error al configurar datos. Revisa la consola.");
+    } finally {
+      setSetupLoading(false);
+    }
+  };
 
   const features = [
     {
@@ -46,9 +62,20 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Logo size="md" />
-            <Button onClick={() => setShowLogin(true)}>
-              Iniciar Sesión
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSetup}
+                disabled={setupLoading}
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                {setupLoading ? "Configurando..." : "Setup DB"}
+              </Button>
+              <Button onClick={() => setShowLogin(true)}>
+                Iniciar Sesión
+              </Button>
+            </div>
           </div>
         </div>
       </header>
