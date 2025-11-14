@@ -104,19 +104,29 @@ export default function Login() {
               {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
             </Button>
 
-            <div className="text-xs text-muted-foreground text-center space-y-1 pt-4 border-t">
-              <p className="font-semibold mb-2">Usuarios de prueba:</p>
-              <div className="space-y-1">
-                <p className="font-mono">robert.gonzalez@universidad.edu.co</p>
-                <p className="text-[10px]">Password: Robert123!</p>
-              </div>
-              <div className="space-y-1">
-                <p className="font-mono">jussi.torres@universidad.edu.co</p>
-                <p className="text-[10px]">Password: Jussi123!</p>
-              </div>
-              <div className="space-y-1">
-                <p className="font-mono">admin@universidad.edu.co</p>
-                <p className="text-[10px]">Password: Admin123!</p>
+            <div className="text-xs text-muted-foreground text-center space-y-2 pt-4 border-t">
+              <p className="font-semibold mb-2">¿Primera vez?</p>
+              <a 
+                href="/setup" 
+                className="block text-primary hover:underline font-medium"
+              >
+                → Crea los usuarios de prueba aquí
+              </a>
+              
+              <div className="pt-2 space-y-1">
+                <p className="font-semibold">Usuarios disponibles:</p>
+                <div className="space-y-1">
+                  <p className="font-mono text-[11px]">robert.gonzalez@universidad.edu.co</p>
+                  <p className="text-[10px]">Password: Robert123!</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="font-mono text-[11px]">jussi.torres@universidad.edu.co</p>
+                  <p className="text-[10px]">Password: Jussi123!</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="font-mono text-[11px]">admin@universidad.edu.co</p>
+                  <p className="text-[10px]">Password: Admin123!</p>
+                </div>
               </div>
             </div>
           </form>
