@@ -45,6 +45,8 @@ export default function MonitorDashboard() {
 
   const fetchMonitorData = async () => {
     try {
+      console.log("👨‍🏫 [MonitorDashboard] Fetching monitor data for user:", appUser?.id);
+
       // Get monitor subject
       const { data: monitorData, error: monitorError } = await supabase
         .from("monitors")
@@ -58,9 +60,21 @@ export default function MonitorDashboard() {
           )
         `)
         .eq("user_id", appUser?.id)
-        .single();
+        .maybeSingle();
 
-      if (monitorError) throw monitorError;
+      console.log("👨‍🏫 [MonitorDashboard] Monitor query result:", { monitorData, monitorError });
+
+      if (monitorError) {
+        console.error("❌ [MonitorDashboard] Error fetching monitor:", monitorError);
+        throw monitorError;
+      }
+
+      if (!monitorData) {
+        console.warn("⚠️ [MonitorDashboard] No monitor record found for user:", appUser?.id);
+        setLoading(false);
+        return;
+      }
+
       setMonitorSubject(monitorData as any);
       setMonitorId(monitorData.id);
 

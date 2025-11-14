@@ -323,6 +323,12 @@ export async function setupTestData() {
     console.log("   - jussi.torres@universidad.edu.co / 123");
     console.log("   - admin@universidad.edu.co / 123");
 
+    console.log("\n⚠️ IMPORTANTE: Si no ves las materias de Robert:");
+    console.log("Las políticas RLS de Supabase están bloqueando las consultas.");
+    console.log("📖 Abre el archivo FIX_RLS.md para ver la solución (muy fácil).");
+    console.log("🔧 Resumen: Ir a Supabase Dashboard → SQL Editor y ejecutar:");
+    console.log("   ALTER TABLE enrollments DISABLE ROW LEVEL SECURITY;");
+
     return { success: true };
   } catch (error) {
     console.error("❌ Error en setup:", error);

@@ -29,35 +29,35 @@ export function AppSidebar({ role }: AppSidebarProps) {
   };
 
   const studentItems = [
-    { title: "Mis Materias", icon: BookOpen, path: "/estudiante/dashboard" },
-    { title: "Mi Asistencia", icon: CheckSquare, path: "/estudiante/asistencia" },
-    { title: "Horarios", icon: Calendar, path: "/estudiante/horarios" },
-    { title: "Mensajes", icon: MessageSquare, path: "/estudiante/mensajes" },
-    { title: "Notificaciones", icon: Bell, path: "/estudiante/notificaciones" },
-    { title: "Mi Perfil", icon: User, path: "/estudiante/perfil" },
-    { title: "Ayuda", icon: HelpCircle, path: "/estudiante/ayuda" },
+    { title: "Mis Materias", icon: BookOpen, path: "/estudiante/dashboard", enabled: true },
+    { title: "Mi Asistencia", icon: CheckSquare, path: "/estudiante/asistencia", enabled: true },
+    { title: "Horarios", icon: Calendar, path: "/estudiante/horarios", enabled: false },
+    { title: "Mensajes", icon: MessageSquare, path: "/estudiante/mensajes", enabled: false },
+    { title: "Notificaciones", icon: Bell, path: "/estudiante/notificaciones", enabled: false },
+    { title: "Mi Perfil", icon: User, path: "/estudiante/perfil", enabled: true },
+    { title: "Ayuda", icon: HelpCircle, path: "/estudiante/ayuda", enabled: false },
   ];
 
   const monitorItems = [
-    { title: "Mis Monitorías", icon: BookOpen, path: "/monitor/dashboard" },
-    { title: "Estudiantes", icon: Users, path: "/monitor/estudiantes" },
-    { title: "Materiales", icon: FolderOpen, path: "/monitor/materiales" },
-    { title: "Asistencia", icon: CheckSquare, path: "/monitor/asistencia" },
-    { title: "Horarios", icon: Calendar, path: "/monitor/horarios" },
-    { title: "Mensajes", icon: MessageSquare, path: "/monitor/mensajes" },
-    { title: "Estadísticas", icon: BarChart3, path: "/monitor/estadisticas" },
-    { title: "Mi Perfil", icon: User, path: "/monitor/perfil" },
-    { title: "Configuración", icon: Settings, path: "/monitor/configuracion" },
+    { title: "Mis Monitorías", icon: BookOpen, path: "/monitor/dashboard", enabled: true },
+    { title: "Estudiantes", icon: Users, path: "/monitor/estudiantes", enabled: false },
+    { title: "Materiales", icon: FolderOpen, path: "/monitor/materiales", enabled: false },
+    { title: "Asistencia", icon: CheckSquare, path: "/monitor/asistencia", enabled: false },
+    { title: "Horarios", icon: Calendar, path: "/monitor/horarios", enabled: false },
+    { title: "Mensajes", icon: MessageSquare, path: "/monitor/mensajes", enabled: false },
+    { title: "Estadísticas", icon: BarChart3, path: "/monitor/estadisticas", enabled: false },
+    { title: "Mi Perfil", icon: User, path: "/monitor/perfil", enabled: true },
+    { title: "Configuración", icon: Settings, path: "/monitor/configuracion", enabled: false },
   ];
 
   const adminItems = [
-    { title: "Dashboard", icon: BarChart3, path: "/admin/dashboard" },
-    { title: "Usuarios", icon: Users, path: "/admin/usuarios" },
-    { title: "Materias", icon: BookOpen, path: "/admin/materias" },
-    { title: "Reportes", icon: BarChart3, path: "/admin/reportes" },
-    { title: "Notificaciones", icon: Bell, path: "/admin/notificaciones" },
-    { title: "Mi Perfil", icon: User, path: "/admin/perfil" },
-    { title: "Configuración", icon: Settings, path: "/admin/configuracion" },
+    { title: "Dashboard", icon: BarChart3, path: "/admin/dashboard", enabled: true },
+    { title: "Usuarios", icon: Users, path: "/admin/usuarios", enabled: true },
+    { title: "Materias", icon: BookOpen, path: "/admin/materias", enabled: true },
+    { title: "Reportes", icon: BarChart3, path: "/admin/reportes", enabled: false },
+    { title: "Notificaciones", icon: Bell, path: "/admin/notificaciones", enabled: false },
+    { title: "Mi Perfil", icon: User, path: "/admin/perfil", enabled: true },
+    { title: "Configuración", icon: Settings, path: "/admin/configuracion", enabled: false },
   ];
 
   const items = role === "student" ? studentItems : role === "monitor" ? monitorItems : adminItems;
@@ -76,9 +76,11 @@ export function AppSidebar({ role }: AppSidebarProps) {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
-                    onClick={() => navigate(item.path)}
+                    onClick={() => item.enabled && navigate(item.path)}
                     isActive={location.pathname === item.path}
-                    tooltip={item.title}
+                    tooltip={item.enabled ? item.title : `${item.title} (Próximamente)`}
+                    disabled={!item.enabled}
+                    className={!item.enabled ? "opacity-50 cursor-not-allowed" : ""}
                   >
                     <item.icon className="h-4 w-4" />
                     <span>{item.title}</span>
