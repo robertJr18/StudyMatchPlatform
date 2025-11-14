@@ -1,6 +1,7 @@
-import { BookOpen, BarChart3, Users, FolderOpen, CheckSquare, LogOut, GraduationCap } from "lucide-react";
+import { BookOpen, BarChart3, Users, FolderOpen, CheckSquare, LogOut } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/Logo";
 import {
   Sidebar,
   SidebarContent,
@@ -51,10 +52,7 @@ export function AppSidebar({ role }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b p-4">
-        <div className="flex items-center gap-2">
-          <GraduationCap className="h-6 w-6 text-primary" />
-          <span className="font-semibold text-lg">StudyMatch</span>
-        </div>
+        <Logo size="sm" />
       </SidebarHeader>
 
       <SidebarContent>
