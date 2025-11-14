@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import { Users, Clock, CheckCircle2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { CreateTimeSlotModal } from "@/components/CreateTimeSlotModal";
+import { UploadMaterialModal } from "@/components/UploadMaterialModal";
 
 interface MonitorSubject {
   id: string;
@@ -33,6 +35,7 @@ export default function MonitorDashboard() {
   const [timeSlots, setTimeSlots] = useState<TimeSlotWithVotes[]>([]);
   const [totalStudents, setTotalStudents] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [monitorId, setMonitorId] = useState<string>("");
 
   useEffect(() => {
     if (appUser) {
@@ -59,6 +62,7 @@ export default function MonitorDashboard() {
 
       if (monitorError) throw monitorError;
       setMonitorSubject(monitorData as any);
+      setMonitorId(monitorData.id);
 
       if (monitorData) {
         // Get total enrolled students
@@ -141,6 +145,20 @@ export default function MonitorDashboard() {
           <p className="text-muted-foreground">
             {monitorSubject.subjects.name} ({monitorSubject.subjects.code})
           </p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-3 mb-8">
+          <CreateTimeSlotModal
+            subjectId={monitorSubject.subjects.id}
+            monitorId={monitorId}
+            onSuccess={fetchMonitorData}
+          />
+          <UploadMaterialModal
+            subjectId={monitorSubject.subjects.id}
+            monitorId={monitorId}
+            onSuccess={fetchMonitorData}
+          />
         </div>
 
         {/* Stats */}

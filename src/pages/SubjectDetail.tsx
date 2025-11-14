@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -8,7 +8,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Clock, MapPin, Users, CheckCircle2, FileDown } from "lucide-react";
+import { Clock, MapPin, Users, CheckCircle2, FileDown, ArrowLeft, Calendar } from "lucide-react";
+import { DetailSkeleton } from "@/components/Skeleton";
 
 interface TimeSlot {
   id: string;
@@ -38,6 +39,7 @@ interface Material {
 
 export default function SubjectDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { appUser } = useAuth();
   const [subject, setSubject] = useState<any>(null);
   const [monitors, setMonitors] = useState<Monitor[]>([]);
@@ -46,6 +48,10 @@ export default function SubjectDetail() {
   const [selectedSlot, setSelectedSlot] = useState<string>("");
   const [currentVote, setCurrentVote] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [attendance, setAttendance] = useState<{ total: number; attended: number }>({
+    total: 0,
+    attended: 0,
+  });
 
   useEffect(() => {
     if (id && appUser) {
@@ -124,6 +130,28 @@ export default function SubjectDetail() {
 
       if (materialsError) throw materialsError;
       setMaterials(materialsData);
+
+      // Fetch attendance data
+      const { data: attendanceData } = await supabase
+        .from("attendance")
+        .select("attended")
+        .eq("student_id", appUser?.id)
+        .in(
+          "session_id",
+          (
+            await supabase
+              .from("sessions")
+              .select("id")
+              .eq("subject_id", id)
+          ).data?.map((s) => s.id) || []
+        );
+
+      if (attendanceData) {
+        setAttendance({
+          total: attendanceData.length,
+          attended: attendanceData.filter((a) => a.attended).length,
+        });
+      }
     } catch (error) {
       console.error("Error fetching subject data:", error);
       toast.error("Error al cargar la información");
@@ -169,8 +197,8 @@ export default function SubjectDetail() {
   if (loading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <DetailSkeleton />
         </div>
       </Layout>
     );
@@ -179,6 +207,15 @@ export default function SubjectDetail() {
   return (
     <Layout>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/estudiante/dashboard")}
+          className="mb-6 -ml-2"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Volver a Mis Materias
+        </Button>
+
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">{subject?.name}</h1>
           <p className="text-muted-foreground">{subject?.code}</p>
@@ -259,7 +296,7 @@ export default function SubjectDetail() {
                 className="w-full"
                 disabled={!selectedSlot || selectedSlot === currentVote}
               >
-                {currentVote ? "Cambiar voto" : "Votar"}
+                {currentVote && selectedSlot === currentVote ? "Ya votaste" : currentVote ? "Cambiar voto" : "Votar"}
               </Button>
 
               {currentVote && (
@@ -271,36 +308,86 @@ export default function SubjectDetail() {
           </Card>
         )}
 
+        {/* Attendance */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Mi Asistencia</CardTitle>
+            <CardDescription>
+              Tu registro de asistencia a las sesiones
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">
+                    {attendance.attended} de {attendance.total} sesiones
+                  </span>
+                  <span className="text-sm font-semibold">
+                    {attendance.total > 0
+                      ? `${Math.round((attendance.attended / attendance.total) * 100)}%`
+                      : "Sin datos"}
+                  </span>
+                </div>
+                <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-success transition-all"
+                    style={{
+                      width: `${
+                        attendance.total > 0
+                          ? (attendance.attended / attendance.total) * 100
+                          : 0
+                      }%`,
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center">
+                <Calendar className="w-8 h-8 text-success" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Materials */}
-        {materials.length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Materiales</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {materials.map((material) => (
-                <div
-                  key={material.id}
-                  className="flex items-center justify-between p-4 bg-muted rounded-lg"
-                >
-                  <div className="flex-1">
-                    <p className="font-medium">{material.title}</p>
-                    {material.description && (
-                      <p className="text-sm text-muted-foreground">{material.description}</p>
+        <Card>
+          <CardHeader>
+            <CardTitle>Materiales</CardTitle>
+            <CardDescription>
+              Recursos compartidos por el monitor
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {materials.length > 0 ? (
+              <div className="space-y-3">
+                {materials.map((material) => (
+                  <div
+                    key={material.id}
+                    className="flex items-center justify-between p-4 bg-muted rounded-lg hover:bg-muted/80 transition-colors"
+                  >
+                    <div className="flex-1">
+                      <p className="font-medium">{material.title}</p>
+                      {material.description && (
+                        <p className="text-sm text-muted-foreground">{material.description}</p>
+                      )}
+                    </div>
+                    {material.file_url && (
+                      <Button variant="ghost" size="icon" asChild>
+                        <a href={material.file_url} target="_blank" rel="noopener noreferrer">
+                          <FileDown className="w-4 h-4" />
+                        </a>
+                      </Button>
                     )}
                   </div>
-                  {material.file_url && (
-                    <Button variant="ghost" size="icon" asChild>
-                      <a href={material.file_url} target="_blank" rel="noopener noreferrer">
-                        <FileDown className="w-4 h-4" />
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        )}
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-muted-foreground py-8">
+                No hay materiales disponibles aún
+              </p>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </Layout>
   );
