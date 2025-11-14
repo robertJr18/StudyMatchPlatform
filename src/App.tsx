@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Login from "./pages/Login";
+import SetupUsers from "./pages/SetupUsers";
 import StudentDashboard from "./pages/StudentDashboard";
 import SubjectDetail from "./pages/SubjectDetail";
 import MonitorDashboard from "./pages/MonitorDashboard";
@@ -24,6 +25,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/setup" element={<SetupUsers />} />
             
             <Route
               path="/estudiante/dashboard"
