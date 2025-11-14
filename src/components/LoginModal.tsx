@@ -111,18 +111,6 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
             />
           </div>
 
-          <div className="bg-muted/50 rounded-lg p-4 space-y-2 text-sm">
-            <p className="font-semibold text-center mb-3">💡 Usuarios de prueba</p>
-            <div className="space-y-2">
-              <p className="font-mono text-xs">robert.gonzalez@universidad.edu.co</p>
-              <p className="font-mono text-xs">jussi.torres@universidad.edu.co</p>
-              <p className="font-mono text-xs">admin@universidad.edu.co</p>
-            </div>
-            <p className="text-center font-semibold text-primary mt-3">
-              Contraseña: 123
-            </p>
-          </div>
-
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
           </Button>
