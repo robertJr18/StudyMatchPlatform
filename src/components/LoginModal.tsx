@@ -46,15 +46,17 @@ export function LoginModal({ open, onOpenChange }: LoginModalProps) {
         localStorage.setItem('user', JSON.stringify(data));
         toast.success(`Bienvenido, ${data.full_name}`);
         onOpenChange(false);
-        
-        // Redirigir según rol
+
+        // Redirigir según rol con recarga para actualizar AuthContext
         const redirectMap: Record<string, string> = {
           student: "/estudiante/dashboard",
           monitor: "/monitor/dashboard",
           coordinator: "/admin/dashboard",
           admin: "/admin/dashboard",
         };
-        navigate(redirectMap[data.role] || "/");
+
+        // Usar window.location para forzar recarga del AuthContext
+        window.location.href = redirectMap[data.role] || "/";
       } else {
         toast.error("Usuario no encontrado");
       }
