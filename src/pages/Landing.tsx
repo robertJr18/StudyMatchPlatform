@@ -1,0 +1,138 @@
+import { useState } from "react";
+import { GraduationCap, Calendar, Users, BookOpen, BarChart3 } from "lucide-react";
+import { LoginModal } from "@/components/LoginModal";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+export default function Landing() {
+  const [showLogin, setShowLogin] = useState(false);
+
+  const features = [
+    {
+      icon: Calendar,
+      title: "Votación Inteligente",
+      description: "Sistema democrático para elegir horarios de monitorías"
+    },
+    {
+      icon: Users,
+      title: "Control de Asistencia",
+      description: "Registro digital y automático de asistencia"
+    },
+    {
+      icon: BookOpen,
+      title: "Materiales Centralizados",
+      description: "Acceso unificado a recursos académicos"
+    },
+    {
+      icon: BarChart3,
+      title: "Analytics Institucionales",
+      description: "Métricas y reportes en tiempo real"
+    }
+  ];
+
+  const founders = [
+    { name: "Camilo Estrada Ortega", role: "Co-fundador", special: false },
+    { name: "Robert González Cabarcas", role: "Desarrollador Web & Co-fundador", special: true },
+    { name: "Jose Londoño Páez", role: "Co-fundador", special: false },
+    { name: "Jussi Torres González", role: "Co-fundador", special: false },
+    { name: "Daniel Otero Núñez", role: "Co-fundador", special: false }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
+      {/* Header */}
+      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-2">
+              <GraduationCap className="h-8 w-8 text-primary" />
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                StudyMatch
+              </span>
+            </div>
+            <Button onClick={() => setShowLogin(true)}>
+              Iniciar Sesión
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center animate-fade-in">
+        <GraduationCap className="h-20 w-20 text-primary mx-auto mb-6" />
+        <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+          StudyMatch
+        </h1>
+        <p className="text-2xl md:text-3xl text-muted-foreground mb-4 font-medium">
+          La plataforma premium de gestión académica
+        </p>
+        <p className="text-xl text-muted-foreground mb-6">
+          Automatiza y optimiza las monitorías universitarias
+        </p>
+        <div className="inline-block bg-primary/10 border border-primary/20 rounded-lg px-6 py-3 mb-8">
+          <p className="text-lg font-semibold text-primary">
+            Inversión: $35.000.000 COP/semestre
+          </p>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((feature, index) => (
+            <Card 
+              key={index} 
+              className="hover-scale border-border/50 hover:border-primary/50 transition-all duration-300"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <CardContent className="pt-6 text-center">
+                <feature.icon className="h-12 w-12 text-primary mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Founders Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h2 className="text-3xl font-bold text-center mb-12">
+          👥 Nuestro Equipo
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          {founders.map((founder, index) => (
+            <Card 
+              key={index}
+              className={`text-center hover-scale ${
+                founder.special ? 'border-primary/50 bg-primary/5' : ''
+              }`}
+            >
+              <CardContent className="pt-6">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 mx-auto mb-4 flex items-center justify-center">
+                  <Users className="h-10 w-10 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-1">{founder.name}</h3>
+                <p className="text-sm text-muted-foreground mb-2">{founder.role}</p>
+                {founder.special && (
+                  <div className="inline-block bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-medium">
+                    💻 Developer
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t mt-20 py-8 bg-card/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-muted-foreground">
+          <p>© 2024 StudyMatch. Transformando la educación universitaria.</p>
+        </div>
+      </footer>
+
+      <LoginModal open={showLogin} onOpenChange={setShowLogin} />
+    </div>
+  );
+}

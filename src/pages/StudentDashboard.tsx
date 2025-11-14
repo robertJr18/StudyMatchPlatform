@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Layout } from "@/components/Layout";
+import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
@@ -72,7 +72,7 @@ export default function StudentDashboard() {
 
   if (loading) {
     return (
-      <Layout>
+      <DashboardLayout role="student">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-8 space-y-2">
             <div className="h-9 bg-muted rounded w-96 animate-pulse" />
@@ -84,12 +84,12 @@ export default function StudentDashboard() {
             ))}
           </div>
         </div>
-      </Layout>
+      </DashboardLayout>
     );
   }
 
   return (
-    <Layout>
+    <DashboardLayout role="student">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
@@ -149,6 +149,6 @@ export default function StudentDashboard() {
           </Card>
         )}
       </div>
-    </Layout>
+    </DashboardLayout>
   );
 }
