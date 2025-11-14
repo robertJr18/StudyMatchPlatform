@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Layout } from "@/components/Layout";
+import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { Users, Clock, CheckCircle2 } from "lucide-react";
@@ -113,17 +113,17 @@ export default function MonitorDashboard() {
 
   if (loading) {
     return (
-      <Layout>
+      <DashboardLayout role="monitor">
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
-      </Layout>
+      </DashboardLayout>
     );
   }
 
   if (!monitorSubject) {
     return (
-      <Layout>
+      <DashboardLayout role="monitor">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Card>
             <CardContent className="py-12 text-center">
