@@ -1,4 +1,4 @@
-import { BookOpen, BarChart3, Users, FolderOpen, CheckSquare, LogOut, User } from "lucide-react";
+import { BookOpen, BarChart3, Users, FolderOpen, CheckSquare, LogOut, User, Settings, Bell, Calendar, MessageSquare, HelpCircle } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
@@ -31,7 +31,11 @@ export function AppSidebar({ role }: AppSidebarProps) {
   const studentItems = [
     { title: "Mis Materias", icon: BookOpen, path: "/estudiante/dashboard" },
     { title: "Mi Asistencia", icon: CheckSquare, path: "/estudiante/asistencia" },
+    { title: "Horarios", icon: Calendar, path: "/estudiante/horarios" },
+    { title: "Mensajes", icon: MessageSquare, path: "/estudiante/mensajes" },
+    { title: "Notificaciones", icon: Bell, path: "/estudiante/notificaciones" },
     { title: "Mi Perfil", icon: User, path: "/estudiante/perfil" },
+    { title: "Ayuda", icon: HelpCircle, path: "/estudiante/ayuda" },
   ];
 
   const monitorItems = [
@@ -39,7 +43,11 @@ export function AppSidebar({ role }: AppSidebarProps) {
     { title: "Estudiantes", icon: Users, path: "/monitor/estudiantes" },
     { title: "Materiales", icon: FolderOpen, path: "/monitor/materiales" },
     { title: "Asistencia", icon: CheckSquare, path: "/monitor/asistencia" },
+    { title: "Horarios", icon: Calendar, path: "/monitor/horarios" },
+    { title: "Mensajes", icon: MessageSquare, path: "/monitor/mensajes" },
+    { title: "Estadísticas", icon: BarChart3, path: "/monitor/estadisticas" },
     { title: "Mi Perfil", icon: User, path: "/monitor/perfil" },
+    { title: "Configuración", icon: Settings, path: "/monitor/configuracion" },
   ];
 
   const adminItems = [
@@ -47,7 +55,9 @@ export function AppSidebar({ role }: AppSidebarProps) {
     { title: "Usuarios", icon: Users, path: "/admin/usuarios" },
     { title: "Materias", icon: BookOpen, path: "/admin/materias" },
     { title: "Reportes", icon: BarChart3, path: "/admin/reportes" },
+    { title: "Notificaciones", icon: Bell, path: "/admin/notificaciones" },
     { title: "Mi Perfil", icon: User, path: "/admin/perfil" },
+    { title: "Configuración", icon: Settings, path: "/admin/configuracion" },
   ];
 
   const items = role === "student" ? studentItems : role === "monitor" ? monitorItems : adminItems;
