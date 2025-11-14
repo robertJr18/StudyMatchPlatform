@@ -194,18 +194,24 @@ export default function SubjectDetail() {
     }
   };
 
+  const attendancePercentage = attendance.total > 0 
+    ? Math.round((attendance.attended / attendance.total) * 100) 
+    : 0;
+
   if (loading) {
     return (
-      <Layout>
+      <DashboardLayout role="student">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <DetailSkeleton />
         </div>
-      </Layout>
+      </DashboardLayout>
     );
   }
 
+  const votedSlot = timeSlots.find(slot => slot.id === currentVote);
+
   return (
-    <Layout>
+    <DashboardLayout role="student">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Button
           variant="ghost"
@@ -389,6 +395,6 @@ export default function SubjectDetail() {
           </CardContent>
         </Card>
       </div>
-    </Layout>
+    </DashboardLayout>
   );
 }
