@@ -16,6 +16,7 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminSubjects from "./pages/AdminSubjects";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import DiagnosticPage from "./pages/DiagnosticPage";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/setup" element={<Setup />} />
+            <Route path="/diagnostico" element={<DiagnosticPage />} />
 
             <Route
               path="/estudiante/dashboard"
