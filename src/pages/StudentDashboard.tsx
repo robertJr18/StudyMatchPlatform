@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { BookOpen } from "lucide-react";
+import { SubjectCardSkeleton } from "@/components/Skeleton";
 
 interface SubjectWithMonitor {
   id: string;
@@ -72,8 +73,16 @@ export default function StudentDashboard() {
   if (loading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8 space-y-2">
+            <div className="h-9 bg-muted rounded w-96 animate-pulse" />
+            <div className="h-5 bg-muted rounded w-48 animate-pulse" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <SubjectCardSkeleton key={i} />
+            ))}
+          </div>
         </div>
       </Layout>
     );
@@ -95,8 +104,16 @@ export default function StudentDashboard() {
           {subjects.map((subject) => (
             <Card
               key={subject.id}
-              className="cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
-              onClick={() => navigate(`/estudiante/materia/${subject.id}`)}
+              className={`transition-all duration-200 ${
+                subject.monitor_count > 0
+                  ? "cursor-pointer hover:shadow-md hover:scale-[1.02]"
+                  : "opacity-60 cursor-not-allowed"
+              }`}
+              onClick={() => {
+                if (subject.monitor_count > 0) {
+                  navigate(`/estudiante/materia/${subject.id}`);
+                }
+              }}
             >
               <CardHeader>
                 <div className="flex items-start justify-between">
@@ -116,7 +133,7 @@ export default function StudentDashboard() {
                   </Badge>
                 ) : (
                   <Badge variant="destructive">
-                    🔴 Sin monitores
+                    🔴 Sin monitores disponibles
                   </Badge>
                 )}
               </CardContent>

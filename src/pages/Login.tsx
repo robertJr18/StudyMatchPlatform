@@ -38,7 +38,13 @@ export default function Login() {
     const { error } = await signIn(email, password);
     
     if (error) {
-      toast.error("Error al iniciar sesión: " + error.message);
+      if (error.message.includes("Invalid login credentials")) {
+        toast.error("Email o contraseña incorrectos. Verifica tus credenciales.");
+      } else if (error.message.includes("Email not confirmed")) {
+        toast.error("Email no confirmado. Contacta al administrador.");
+      } else {
+        toast.error("Error al iniciar sesión: " + error.message);
+      }
     }
     setIsLoading(false);
   };
@@ -68,7 +74,17 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className={
+                  email && !email.endsWith("@universidad.edu.co")
+                    ? "border-destructive"
+                    : ""
+                }
               />
+              {email && !email.endsWith("@universidad.edu.co") && (
+                <p className="text-xs text-destructive">
+                  El email debe terminar en @universidad.edu.co
+                </p>
+              )}
             </div>
             
             <div className="space-y-2">
@@ -88,11 +104,20 @@ export default function Login() {
               {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
             </Button>
 
-            <div className="text-xs text-muted-foreground text-center space-y-1 pt-4">
-              <p className="font-semibold">Usuarios de prueba:</p>
-              <p>robert.gonzalez@universidad.edu.co</p>
-              <p>jussi.torres@universidad.edu.co</p>
-              <p>admin@universidad.edu.co</p>
+            <div className="text-xs text-muted-foreground text-center space-y-1 pt-4 border-t">
+              <p className="font-semibold mb-2">Usuarios de prueba:</p>
+              <div className="space-y-1">
+                <p className="font-mono">robert.gonzalez@universidad.edu.co</p>
+                <p className="text-[10px]">Password: Robert123!</p>
+              </div>
+              <div className="space-y-1">
+                <p className="font-mono">jussi.torres@universidad.edu.co</p>
+                <p className="text-[10px]">Password: Jussi123!</p>
+              </div>
+              <div className="space-y-1">
+                <p className="font-mono">admin@universidad.edu.co</p>
+                <p className="text-[10px]">Password: Admin123!</p>
+              </div>
             </div>
           </form>
         </CardContent>
