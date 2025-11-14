@@ -8,9 +8,11 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Landing from "./pages/Landing";
 import Setup from "./pages/Setup";
 import StudentDashboard from "./pages/StudentDashboard";
+import StudentAttendance from "./pages/StudentAttendance";
 import SubjectDetail from "./pages/SubjectDetail";
 import MonitorDashboard from "./pages/MonitorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,7 +45,25 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-            
+
+            <Route
+              path="/estudiante/asistencia"
+              element={
+                <ProtectedRoute allowedRoles={["student"]}>
+                  <StudentAttendance />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/estudiante/perfil"
+              element={
+                <ProtectedRoute allowedRoles={["student"]}>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+
             <Route
               path="/monitor/dashboard"
               element={
@@ -52,7 +72,16 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-            
+
+            <Route
+              path="/monitor/perfil"
+              element={
+                <ProtectedRoute allowedRoles={["monitor"]}>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+
             <Route
               path="/admin/dashboard"
               element={
@@ -61,7 +90,16 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-            
+
+            <Route
+              path="/admin/perfil"
+              element={
+                <ProtectedRoute allowedRoles={["coordinator", "admin"]}>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

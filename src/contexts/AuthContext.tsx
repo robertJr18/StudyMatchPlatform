@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User as AppUser } from '@/types/auth';
+import { setupTestData } from '@/utils/setupTestData';
 
 interface AuthContextType {
   appUser: AppUser | null;
@@ -14,18 +15,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check localStorage for user
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        const user = JSON.parse(storedUser);
-        setAppUser(user);
-      } catch (error) {
-        console.error('Error parsing stored user:', error);
-        localStorage.removeItem('user');
+    const initializeApp = async () => {
+      // Initialize test data if first time
+      const hasInitialized = localStorage.getItem('studymatch_initialized');
+      if (!hasInitialized) {
+        console.log('🚀 Primera carga - inicializando datos...');
+        try {
+          await setupTestData();
+          localStorage.setItem('studymatch_initialized', 'true');
+          console.log('✅ Datos inicializados correctamente');
+        } catch (error) {
+          console.error('❌ Error inicializando datos:', error);
+        }
       }
-    }
-    setLoading(false);
+
+      // Check localStorage for user
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const user = JSON.parse(storedUser);
+          setAppUser(user);
+        } catch (error) {
+          console.error('Error parsing stored user:', error);
+          localStorage.removeItem('user');
+        }
+      }
+      setLoading(false);
+    };
+
+    initializeApp();
   }, []);
 
   const signOut = () => {

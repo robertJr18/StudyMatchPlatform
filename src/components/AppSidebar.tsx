@@ -1,4 +1,4 @@
-import { BookOpen, BarChart3, Users, FolderOpen, CheckSquare, LogOut } from "lucide-react";
+import { BookOpen, BarChart3, Users, FolderOpen, CheckSquare, LogOut, User } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
@@ -30,7 +30,8 @@ export function AppSidebar({ role }: AppSidebarProps) {
 
   const studentItems = [
     { title: "Mis Materias", icon: BookOpen, path: "/estudiante/dashboard" },
-    { title: "Mi Asistencia", icon: BarChart3, path: "/estudiante/asistencia" },
+    { title: "Mi Asistencia", icon: CheckSquare, path: "/estudiante/asistencia" },
+    { title: "Mi Perfil", icon: User, path: "/estudiante/perfil" },
   ];
 
   const monitorItems = [
@@ -38,6 +39,7 @@ export function AppSidebar({ role }: AppSidebarProps) {
     { title: "Estudiantes", icon: Users, path: "/monitor/estudiantes" },
     { title: "Materiales", icon: FolderOpen, path: "/monitor/materiales" },
     { title: "Asistencia", icon: CheckSquare, path: "/monitor/asistencia" },
+    { title: "Mi Perfil", icon: User, path: "/monitor/perfil" },
   ];
 
   const adminItems = [
@@ -45,6 +47,7 @@ export function AppSidebar({ role }: AppSidebarProps) {
     { title: "Usuarios", icon: Users, path: "/admin/usuarios" },
     { title: "Materias", icon: BookOpen, path: "/admin/materias" },
     { title: "Reportes", icon: BarChart3, path: "/admin/reportes" },
+    { title: "Mi Perfil", icon: User, path: "/admin/perfil" },
   ];
 
   const items = role === "student" ? studentItems : role === "monitor" ? monitorItems : adminItems;
