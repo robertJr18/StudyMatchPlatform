@@ -16,31 +16,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const initializeApp = async () => {
-      // Initialize test data if first time
-      const hasInitialized = localStorage.getItem('studymatch_initialized');
-      if (!hasInitialized) {
-        console.log('🚀 Primera carga - inicializando datos...');
-        try {
-          await setupTestData();
-          localStorage.setItem('studymatch_initialized', 'true');
-          console.log('✅ Datos inicializados correctamente');
-        } catch (error) {
-          console.error('❌ Error inicializando datos:', error);
-        }
-      }
+      try {
+        console.log('🔍 Verificando datos en base de datos...');
 
-      // Check localStorage for user
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        try {
-          const user = JSON.parse(storedUser);
-          setAppUser(user);
-        } catch (error) {
-          console.error('Error parsing stored user:', error);
-          localStorage.removeItem('user');
+        // Check if data exists in Supabase (not localStorage)
+        const { supabase } = await import('@/integrations/supabase/client');
+        const { data: existingUsers, error: checkError } = await supabase
+          .from('users')
+          .select('id')
+          .limit(1);
+
+        if (checkError) {
+          console.error('❌ Error verificando datos:', checkError);
         }
+
+        // If no users exist in database, initialize
+        if (!existingUsers || existingUsers.length === 0) {
+          console.log('🚀 Base de datos vacía - inicializando datos...');
+          try {
+            await setupTestData();
+            console.log('✅ Datos inicializados correctamente');
+          } catch (error) {
+            console.error('❌ Error inicializando datos:', error);
+            console.error('⚠️ Por favor ejecuta /force-setup manualmente');
+          }
+        } else {
+          console.log('✅ Datos ya existen en la base de datos');
+        }
+
+        // Check localStorage for user
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          try {
+            const user = JSON.parse(storedUser);
+            setAppUser(user);
+          } catch (error) {
+            console.error('Error parsing stored user:', error);
+            localStorage.removeItem('user');
+          }
+        }
+      } catch (error) {
+        console.error('❌ Error en initializeApp:', error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     initializeApp();
