@@ -167,15 +167,15 @@ Consulta `SETUP.md` para instrucciones detalladas.
 ```bash
 npm run dev
 # La aplicación estará disponible en http://localhost:5173
-```
 
-6. **Build para producción**
-```bash
-npm run build
-npm run preview
 ```
+🌐 Versión en Producción
 
----
+Además de la ejecución local, StudyMatch está desplegado y completamente funcional en Vercel:
+
+👉 https://www.studymatch.rest
+
+No requiere instalación: puedes probar todas las funcionalidades desde ahí.
 
 ## 📁 Estructura del Proyecto
 
