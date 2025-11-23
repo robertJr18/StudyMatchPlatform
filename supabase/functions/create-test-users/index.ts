@@ -1,3 +1,4 @@
+// @ts-ignore - Deno import
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 
 const corsHeaders = {
@@ -25,21 +26,21 @@ Deno.serve(async (req) => {
     const testUsers = [
       {
         email: 'robert.gonzalez@universidad.edu.co',
-        password: 'Robert123!',
+        password: '123',
         full_name: 'Robert Eloy González Cabarcas',
         role: 'student',
         career: 'Ingeniería de Sistemas',
       },
       {
         email: 'jussi.torres@universidad.edu.co',
-        password: 'Jussi123!',
+        password: '123',
         full_name: 'Jussi Torres González',
         role: 'monitor',
         career: null,
       },
       {
         email: 'admin@universidad.edu.co',
-        password: 'Admin123!',
+        password: '123',
         full_name: 'Administrador del Sistema',
         role: 'admin',
         career: null,
