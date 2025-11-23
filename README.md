@@ -243,15 +243,15 @@ Para probar la aplicación, usa estas credenciales de demo:
 
 ### Estudiante
 - **Email:** robert.gonzalez@universidad.edu.co
-- **Password:** Robert123!
+- **Password:** 123
 
 ### Monitor
 - **Email:** jussi.torres@universidad.edu.co
-- **Password:** Jussi123!
+- **Password:** 123
 
 ### Administrador
 - **Email:** admin@universidad.edu.co
-- **Password:** Admin123!
+- **Password:** 123
 
 ---
 
@@ -311,8 +311,8 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 🎓 Contexto Académico
 
-**Proyecto Final** — *Gestión de Proyectos*  
-**Universidad del Magdalena** — Facultad de Ingeniería  
+**Proyecto Final** — *Gestión de Proyectos*
+**Universidad del Magdalena** — Facultad de Ingeniería
 **Semestre**: 2025-2
 
 ### Objetivos Cumplidos
@@ -327,8 +327,8 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 📧 Contacto
 
-**Robert González Cabarcas** - Desarrollador Principal  
-[GitHub](https://github.com/robertJr18) 
+**Robert González Cabarcas** - Desarrollador Principal
+[GitHub](https://github.com/robertJr18)
 
 ---
 

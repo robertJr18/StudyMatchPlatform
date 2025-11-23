@@ -52,9 +52,9 @@ export async function setupTestData() {
     const { error: usersError } = await supabase.from("users").upsert(users);
     if (usersError) {
       console.error("❌ Error insertando usuarios:", usersError);
-    } else {
-      console.log("✅ Usuarios insertados/actualizados");
+      throw new Error(`Error insertando usuarios: ${usersError.message}`);
     }
+    console.log("✅ Usuarios insertados/actualizados (5 usuarios)");
 
     // 2. Crear materias
     const subjects = [
@@ -106,9 +106,9 @@ export async function setupTestData() {
     const { error: subjectsError } = await supabase.from("subjects").upsert(subjects);
     if (subjectsError) {
       console.error("❌ Error insertando materias:", subjectsError);
-    } else {
-      console.log("✅ Materias insertadas/actualizadas");
+      throw new Error(`Error insertando materias: ${subjectsError.message}`);
     }
+    console.log("✅ Materias insertadas/actualizadas (6 materias)");
 
     // 3. Crear enrollments para Robert (6 materias)
     const robertId = users[0].id;
@@ -124,9 +124,9 @@ export async function setupTestData() {
     const { error: enrollmentsError } = await supabase.from("enrollments").insert(enrollments);
     if (enrollmentsError) {
       console.error("❌ Error insertando enrollments:", enrollmentsError);
-    } else {
-      console.log("✅ Enrollments de Robert insertados (6 materias)");
+      throw new Error(`Error insertando enrollments: ${enrollmentsError.message}`);
     }
+    console.log("✅ Enrollments de Robert insertados (6 materias)");
 
     // 4. Crear monitores
     const monitors = [
@@ -152,9 +152,9 @@ export async function setupTestData() {
 
     if (monitorError) {
       console.error("❌ Error insertando monitores:", monitorError);
-    } else {
-      console.log("✅ Monitores insertados (3 monitores)");
+      throw new Error(`Error insertando monitores: ${monitorError.message}`);
     }
+    console.log("✅ Monitores insertados (3 monitores)");
 
     // 5. Crear horarios para cada materia con monitor
     const timeSlots = [
